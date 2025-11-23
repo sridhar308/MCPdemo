@@ -40,7 +40,7 @@ async def main():
 
     print("Invoking math tool...")
     try:
-        math_call = agent.invoke({"messages":[{"role":"user","content": "what is (3+5) x 12?"}]})
+        math_call = agent.invoke({"messages":[{"role":"user","content": "what is (3/5) x 12?"}]})
         if inspect.isawaitable(math_call):
             math_response = await asyncio.wait_for(math_call, timeout=60)
         else:
@@ -53,7 +53,7 @@ async def main():
         return
 
     # Debug: print full response object to inspect structure
-    print("math_response:", repr(math_response))
+    print("math full response:", repr(math_response))
     # Try to read common fields safely
     if isinstance(math_response, dict):
         if "message" in math_response:
@@ -98,9 +98,12 @@ if __name__ == "__main__":
 
 
 
-#     Invoking math tool...
-# math_response: {'messages': [HumanMessage(content='what is (3+5) x 12?', additional_kwargs={}, response_metadata={}, id='0da6fa3b-8ec7-4047-a003-d2d709fb32e0'), AIMessage(content='(3\u202f+\u202f5)\u202f×\u202f12\u202f=\u202f8\u202f×\u202f12\u202f=\u202f**96**', additional_kwargs={'reasoning_content': 'We need to compute (3+5) x 12. That\'s 8 * 12 = 96. We might want to use the multiply function? But we can just compute. The user asked "what is (3+5) x 12?" It\'s a simple arithmetic question. Provide answer.'}, response_metadata={'token_usage': {'completion_tokens': 97, 'prompt_tokens': 160, 'total_tokens': 257, 'completion_time': 0.099669963, 'completion_tokens_details': {'reasoning_tokens': 63}, 'prompt_time': 0.008964367, 'prompt_tokens_details': None, 'queue_time': 0.051338562, 'total_time': 0.10863433}, 'model_name': 'openai/gpt-oss-20b', 'system_fingerprint': 'fp_e99e93f2ac', 'service_tier': 'on_demand', 'finish_reason': 'stop', 'logprobs': None, 'model_provider': 'groq'}, id='lc_run--1fbfa320-db4f-49e3-98ba-7688fce66929-0', usage_metadata={'input_tokens': 160, 'output_tokens': 97, 'total_tokens': 257, 'output_token_details': {'reasoning': 63}})]}
-# Math Response: (3 + 5) × 12 = 8 × 12 = **96**
+# Invoking math tool...
+# math full response: {'messages': [HumanMessage(content='what is (3+5) x 12?', additional_kwargs={}, response_metadata={}, id='f9c09601-71df-4e72-ba40-8ae7fb3c0f62'), 
+# AIMessage(content='\\( (3+5) \\times 12 = 8 \\times 12 = 96 \\).', additional_kwargs={'reasoning_content': "User asks for (3+5) x 12. That's 8 * 12 = 96. They likely want the result. No function needed."}, response_metadata={'token_usage': {'completion_tokens': 64, 'prompt_tokens': 160, 'total_tokens': 224, 'completion_time': 0.064544282, 'completion_tokens_details': {'reasoning_tokens': 33}, 'prompt_time': 0.01070067, 'prompt_tokens_details': None, 'queue_time': 0.05088959, 'total_time': 0.075244952}, 'model_name': 'openai/gpt-oss-20b', 'system_fingerprint': 'fp_e99e93f2ac', 'service_tier': 'on_demand', 'finish_reason': 'stop', 'logprobs': None, 'model_provider': 'groq'}, id='lc_run--0c744c96-2822-4999-8d5e-6f240ffa6965-0', usage_metadata={'input_tokens': 160, 'output_tokens': 64, 'total_tokens': 224, 'output_token_details': {'reasoning': 33}})]}
+
+# Math Response: \( (3+5) \times 12 = 8 \times 12 = 96 \).
+
 # Invoking weather tool...
-# weather_response: {'messages': [HumanMessage(content='what is the current weather in New York City?', additional_kwargs={}, response_metadata={}, id='fefff63f-a7ec-4d16-95b6-880cdb85e970'), AIMessage(content='I’m sorry, but I can’t provide that.', additional_kwargs={'reasoning_content': 'User asks for current weather in NYC. I must refuse because it requires real-time data. I must give a refusal.'}, response_metadata={'token_usage': {'completion_tokens': 45, 'prompt_tokens': 159, 'total_tokens': 204, 'completion_time': 0.045295394, 'completion_tokens_details': {'reasoning_tokens': 25}, 'prompt_time': 0.015915906, 'prompt_tokens_details': None, 'queue_time': 0.142369293, 'total_time': 0.0612113}, 'model_name': 'openai/gpt-oss-20b', 'system_fingerprint': 'fp_e99e93f2ac', 'service_tier': 'on_demand', 'finish_reason': 'stop', 'logprobs': None, 'model_provider': 'groq'}, id='lc_run--a01a7430-8a0c-4527-b02e-1cf8063eb914-0', usage_metadata={'input_tokens': 159, 'output_tokens': 45, 'total_tokens': 204, 'output_token_details': {'reasoning': 25}})]}
-# Weather Response: I’m sorry, but I can’t provide that.
+# weather_response: {'messages': [HumanMessage(content='what is the current weather in New York City?', additional_kwargs={}, response_metadata={}, id='f188a66a-5f3a-41d5-b58e-5a7cd27f00e9'), AIMessage(content='I’m sorry, but I don’t have access to real‑time data, so I can’t tell you the current weather in New\u202fYork City. You might want to check a weather website or app for the latest information.', additional_kwargs={'reasoning_content': "User asks current weather. We can't browse. Must refuse or say unknown. We can say we can't fetch real-time data."}, response_metadata={'token_usage': {'completion_tokens': 81, 'prompt_tokens': 159, 'total_tokens': 240, 'completion_time': 0.083439614, 'completion_tokens_details': {'reasoning_tokens': 26}, 'prompt_time': 0.010555792, 'prompt_tokens_details': None, 'queue_time': 0.050633888, 'total_time': 0.093995406}, 'model_name': 'openai/gpt-oss-20b', 'system_fingerprint': 'fp_e99e93f2ac', 'service_tier': 'on_demand', 'finish_reason': 'stop', 'logprobs': None, 'model_provider': 'groq'}, id='lc_run--69e5b6fb-6d24-4fb8-ab3f-9352210b76f5-0', usage_metadata={'input_tokens': 159, 'output_tokens': 81, 'total_tokens': 240, 'output_token_details': {'reasoning': 26}})]}
+# Weather Response: I’m sorry, but I don’t have access to real‑time data, so I can’t tell you the current weather in New York City. You might want to check a weather website or app for the latest information.

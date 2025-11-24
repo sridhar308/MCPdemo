@@ -19,10 +19,10 @@ async def main():
                 "transport": "stdio"
             },
             # Weather tool removed for now to simplify debugging (start with math only)
-            # "weather":{ 
-            #     "transport": "streamable_http",
-            #     "url": "http://localhost:8000/mcp"
-            # }
+            "weather":{ 
+                "transport": "streamable_http",
+                "url": "http://127.0.0.1:8000/mcp"
+            }
         }
     )
 
